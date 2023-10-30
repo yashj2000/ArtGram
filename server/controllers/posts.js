@@ -1,6 +1,5 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
-import Event from "../models/Event.js";
 
 /* CREATE */
 export const createPost = async (req, res) => {
@@ -66,6 +65,32 @@ export const likePost = async (req, res) => {
       { likes: post.likes },
       { new: true }
     );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+/* NEW COMMENT UPDATE */
+export const commentPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId , firstName, lastName, text } = req.body;
+    const post = await Post.findById(id);
+
+    // Create a new comment object
+    const newComment = {
+      userId,
+      firstName, lastName,
+      text,
+    };
+    // console.log(userId, text);
+    // Add the new comment to the post's comments array
+    post.comments.push(newComment);
+
+    // Save the updated post
+    const updatedPost = await post.save();
 
     res.status(200).json(updatedPost);
   } catch (err) {

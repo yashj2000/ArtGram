@@ -1,18 +1,17 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
-  FavoriteOutlined,
-  ShareOutlined,
+  ShareOutlined
 } from "@mui/icons-material";
 import EventIcon from '@mui/icons-material/Event'; // Add this import
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import AddCommentIcon from '@mui/icons-material/AddComment';
-import { Box, Divider, IconButton, Input, Typography, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setEvent } from "state";
 import moment from "moment";
 
@@ -29,7 +28,6 @@ const EventWidget = ({
   createdAt
 }) => {
   const [isComments, setIsComments] = useState(false);
-  const [comment, setComment] = useState(''); // State to store the comment text
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -53,24 +51,7 @@ const EventWidget = ({
     dispatch(setEvent({ event: updatedEvent }));
   };
 
-  const eventComment = async () => {
-    // Send a request to event the comment
-    const response = await fetch(`http://localhost:3001/events/${eventId}/comment`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: loggedInUserId, text: comment }),
-    });
-    const updatedEvent = await response.json();
-    dispatch(setEvent({ event: updatedEvent }));
-
-    // Clear the comment input field
-    setComment('');
-  };
-
-  // Function to fetch user information by userId
+  // Fetch user information by userId
   const fetchUserInfo = async (userId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/users/${userId}`);
@@ -133,24 +114,14 @@ const EventWidget = ({
             <Box key={`${name}-${i}`}>
               <Divider />
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-              {comment.userId} : {comment.text} {/* Display commentor's name */}
+                {comment.userId} : {comment.text} {/* Display commentor's name */}
               </Typography>
             </Box>
           ))}
           <Divider />
-          
-          {/* Comment input field */}
-          <Box sx={{ pl: "1rem" }}>
-            <Input
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Write a comment"
-              fullWidth
-            />
-            <IconButton onClick={eventComment}><AddCommentIcon /></IconButton>
-          </Box>
         </Box>
       )}
+
     </WidgetWrapper>
   );
 };
