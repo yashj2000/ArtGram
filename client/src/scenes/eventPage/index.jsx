@@ -1,9 +1,9 @@
-import { Box, Button, useMediaQuery, IconButton, Typography } from "@mui/material";
+import { Box, Button, useMediaQuery, IconButton, Typography} from "@mui/material";
 import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
-import MyPostWidget from "scenes/widgets/MyPostWidget";
-import PostsWidget from "scenes/widgets/PostsWidget";
+import MyEventWidget from "scenes/widgets/MyEventWidget";
+import EventsWidget from "scenes/widgets/EventsWidget";
 import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ import {
   Face
 } from "@mui/icons-material";
 
-const HomePage = () => {
+const EventPage = () => {
   const navigate = useNavigate();
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
@@ -46,19 +46,19 @@ const HomePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidget picturePath={picturePath} />
+          <MyEventWidget picturePath={picturePath} />
           <Box alignItems="center" margin="auto">
-            <IconButton onClick={() => navigate(`/home`)}>
+          <IconButton onClick={() => navigate(`/home`)}>
               {/* <Home />  */}
               <Typography padding="8px" fontSize="16px">Posts</Typography>
             </IconButton>
             <IconButton onClick={() => navigate(`/eventHome`)}>
               {/* <Search />  */}
-              <Typography padding="8px" fontSize="16px">Events</Typography>
+              <Typography padding="8px"  fontSize="16px">Events</Typography>
             </IconButton>
           </Box>
-
-          <PostsWidget userId={_id} />
+    
+          <EventsWidget userId={_id} />
         </Box>
         {isNonMobileScreens && (
           <Box flexBasis="26%">
@@ -72,4 +72,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default EventPage;

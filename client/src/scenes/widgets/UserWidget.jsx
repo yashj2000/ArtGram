@@ -130,23 +130,12 @@ const UserWidget = ({ userId, picturePath }) => {
             </IconButton>
           </Box>
           <Box>
-          <IconButton>
+          <IconButton onClick={() => navigate(`/eventHome`)}>
               <Search /> 
-              <Typography padding="12px" fontSize="24px">Explore</Typography>
+              <Typography padding="12px" fontSize="24px">Events</Typography>
             </IconButton>
           </Box>
-          <Box>
-          <IconButton>
-              <NotificationsActiveOutlined /> 
-              <Typography padding="12px" fontSize="24px">Notifications</Typography>
-            </IconButton>
-          </Box>
-          <Box>
-          <IconButton>
-              <Message /> 
-              <Typography padding="12px" fontSize="24px">Message</Typography>
-            </IconButton>
-          </Box>
+
     </WidgetWrapper>
   );
 };

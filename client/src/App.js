@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
+import EventPage from "scenes/eventPage";
 import LoginPage from "scenes/loginPage";
 import ProfilePage from "scenes/profilePage";
 import { useMemo } from "react";
@@ -23,6 +24,10 @@ function App() {
             <Route
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/eventHome"
+              element={isAuth ? <EventPage /> : <Navigate to="/" />}
             />
             <Route
               path="/profile/:userId"

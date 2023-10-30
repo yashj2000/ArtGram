@@ -53,7 +53,7 @@ const Navbar = () => {
             },
           }}
         >
-          Twitter
+          ArtGram
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
@@ -63,10 +63,10 @@ const Navbar = () => {
             padding="0.1rem 1.5rem"
             marginLeft="24rem"
           >
-            <InputBase placeholder="Search..." />
+            {/* <InputBase placeholder="Search..." />
             <IconButton>
               <Search />
-            </IconButton>
+            </IconButton> */}
           </FlexBetween>
         )}
       </FlexBetween>

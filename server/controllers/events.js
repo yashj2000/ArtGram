@@ -1,13 +1,12 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 import Event from "../models/Event.js";
-
 /* CREATE */
-export const createPost = async (req, res) => {
+export const createEvent = async (req, res) => {
   try {
     const { userId, description, picturePath } = req.body;
     const user = await User.findById(userId);
-    const newPost = new Post({
+    const newEvent = new Event({
       userId,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -18,37 +17,37 @@ export const createPost = async (req, res) => {
       likes: {},
       comments: [],
     });
-    await newPost.save();
+    await newEvent.save();
 
-    const post = await Post.find();
-    res.status(201).json(post);
+    const event = await Event.find();
+    res.status(201).json(event);
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
 };
 
 /* READ */
-export const getFeedPosts = async (req, res) => {
+export const getFeedEvents = async (req, res) => {
   try {
-    const post = await Post.find();
-    res.status(200).json(post);
+    const event = await Event.find();
+    res.status(200).json(event);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-export const getUserPosts = async (req, res) => {
+export const getUserEvents = async (req, res) => {
   try {
     const { userId } = req.params;
-    const post = await Post.find({ userId });
-    res.status(200).json(post);
+    const event = await Event.find({ userId });
+    res.status(200).json(event);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
 /* UPDATE */
-export const likePost = async (req, res) => {
+export const rsvpEvent = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
