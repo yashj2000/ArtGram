@@ -5,8 +5,6 @@ import {
   ShareOutlined,
 } from "@mui/icons-material";
 
-import EventIcon from '@mui/icons-material/Event'; // Add this import
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import { Box, Divider, IconButton, Input, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
@@ -34,6 +32,7 @@ const PostWidget = ({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserName = useSelector((state) => state.user.firstName + " " + state.user.lastName);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
   const timeFromNow = moment(createdAt).fromNow();
@@ -62,25 +61,13 @@ const PostWidget = ({
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: loggedInUserId, text: comment }),
+      body: JSON.stringify({ userId: loggedInUserName, text: comment }),
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
 
     // Clear the comment input field
     setComment('');
-  };
-
-  // Function to fetch user information by userId
-  const fetchUserInfo = async (userId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/users/${userId}`);
-      const userInfo = await response.json();
-      return userInfo;
-    } catch (error) {
-      console.error('Error fetching user info:', error);
-      return { firstName: '', lastName: '' };
-    }
   };
 
   return (

@@ -1,10 +1,8 @@
 import {
   ChatBubbleOutlineOutlined,
-  FavoriteBorderOutlined,
-  FavoriteOutlined,
-  ShareOutlined,
 } from "@mui/icons-material";
-import EventIcon from '@mui/icons-material/Event'; // Add this import
+import EventIcon from '@mui/icons-material/Event';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import { Box, Divider, IconButton, Input, Typography, useTheme } from "@mui/material";
@@ -33,6 +31,7 @@ const EventWidget = ({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserName = useSelector((state) => state.user.firstName + " " + state.user.lastName);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
   const timeFromNow = moment(createdAt).fromNow();
@@ -61,25 +60,13 @@ const EventWidget = ({
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: loggedInUserId, text: comment }),
+      body: JSON.stringify({ userId: loggedInUserName, text: comment }),
     });
     const updatedEvent = await response.json();
     dispatch(setEvent({ event: updatedEvent }));
 
     // Clear the comment input field
     setComment('');
-  };
-
-  // Function to fetch user information by userId
-  const fetchUserInfo = async (userId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/users/${userId}`);
-      const userInfo = await response.json();
-      return userInfo;
-    } catch (error) {
-      console.error('Error fetching user info:', error);
-      return { firstName: '', lastName: '' };
-    }
   };
 
   return (
@@ -122,9 +109,8 @@ const EventWidget = ({
             <Typography>{comments.length}</Typography>
           </FlexBetween>
         </FlexBetween>
-
-        <IconButton>
-          <ShareOutlined />
+        <IconButton onClick={() => window.open("https://www.google.com/maps?s=web&rlz=1C1CHBF_enIN958IN958&daddr=VRG5%2BFHW,+Jawahar+Kala+Kendra,+JAWAHAR+KALA+KENDRA,+Gandhi+Nagar,+Jaipur,+Rajasthan+302015", "_blank")}>
+          <LocationOnIcon />
         </IconButton>
       </FlexBetween>
       {isComments && (
@@ -133,6 +119,7 @@ const EventWidget = ({
             <Box key={`${name}-${i}`}>
               <Divider />
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+              {/* {fetchUser} */}
               {comment.userId} : {comment.text} {/* Display commentor's name */}
               </Typography>
             </Box>
